@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Block" load_steps=5 format=3 uid="uid://cx0wddmw87ss4"]
+
+[ext_resource type="Script" path="res://assets/scripts/resources/Block.cs" id="1_8r50j"]
+[ext_resource type="Texture2D" uid="uid://optbw3f4cr1k" path="res://assets/textures/blocks/m/dirt.png" id="1_pagi5"]
+[ext_resource type="Texture2D" uid="uid://ge657pqscgq4" path="res://assets/textures/blocks/m/grass_block_side.png" id="2_fo2xg"]
+[ext_resource type="Texture2D" uid="uid://ysuqhaj1nn10" path="res://assets/textures/blocks/m/grass_block_top.png" id="3_dvm82"]
+
+[resource]
+script = ExtResource("1_8r50j")
+Texture = ExtResource("2_fo2xg")
+TopTexture = ExtResource("3_dvm82")
+BottomTexture = ExtResource("1_pagi5")
+IsTransparent = false
