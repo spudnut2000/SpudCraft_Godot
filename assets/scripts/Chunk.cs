@@ -20,6 +20,8 @@ public partial class Chunk : StaticBody3D
         
         CallDeferred(Node.MethodName.AddChild, _meshInstance);
         CallDeferred(Node.MethodName.AddChild, _collisionShape);
+        
+        UpdateCollisionShape();
     }
 
     public void Update()
@@ -46,6 +48,11 @@ public partial class Chunk : StaticBody3D
     {
         Data.Blocks[position.X, position.Y, position.Z] = block;
         Update();
+    }
+    
+    public Block GetBlock(Vector3I position)
+    {
+        return Data.Blocks[position.X, position.Y, position.Z];
     }
 
     public void LoadChunkData(ChunkData data = null)

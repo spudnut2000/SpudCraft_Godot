@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cjbalvfe4fga1"]
+[gd_scene load_steps=7 format=3 uid="uid://cjbalvfe4fga1"]
 
 [ext_resource type="Script" path="res://assets/test_player/Player.cs" id="1_kimpx"]
+[ext_resource type="Shader" path="res://assets/wireframe.gdshader" id="2_gshin"]
 [ext_resource type="Texture2D" uid="uid://oa2c5o2g2wnt" path="res://assets/textures/crosshair.png" id="2_te55t"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_e026r"]
@@ -10,11 +11,13 @@ radius = 0.4
 [sub_resource type="BoxMesh" id="BoxMesh_2nh5k"]
 size = Vector3(1.02, 1.02, 1.02)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mgpbr"]
-transparency = 1
-albedo_color = Color(5.77569e-07, 0.624322, 0.62441, 0.564706)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ed2dw"]
+render_priority = 0
+shader = ExtResource("2_gshin")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 0.0
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("Head", "Camera", "RayCast", "BlockHighlight", "FpsLabel", "CoordsLabel")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("Head", "Camera", "RayCast", "BlockHighlight", "FpsLabel", "CoordsLabel", "LookingAtLabel", "SelectedBlockLabel")]
 script = ExtResource("1_kimpx")
 Head = NodePath("Head")
 Camera = NodePath("Head/Camera3D")
@@ -22,6 +25,8 @@ RayCast = NodePath("Head/Camera3D/RayCast3D")
 BlockHighlight = NodePath("Head/BlockHighlight")
 FpsLabel = NodePath("CanvasLayer/Control/FPS")
 CoordsLabel = NodePath("CanvasLayer/Control/Coords")
+LookingAtLabel = NodePath("CanvasLayer/Control/LookingAt")
+SelectedBlockLabel = NodePath("CanvasLayer/Control/SelectedBlockLabel")
 _mouseSensitivity = 0.3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -40,7 +45,7 @@ target_position = Vector3(0, 0, -20)
 visible = false
 mesh = SubResource("BoxMesh_2nh5k")
 skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_mgpbr")
+surface_material_override/0 = SubResource("ShaderMaterial_ed2dw")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -83,3 +88,20 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_te55t")
+
+[node name="LookingAt" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_top = 48.0
+offset_right = 90.0
+offset_bottom = 71.0
+text = "Looking at: "
+
+[node name="SelectedBlockLabel" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "Selected Block: "

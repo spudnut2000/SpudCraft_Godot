@@ -7,3 +7,4 @@
 script = ExtResource("1_g2flb")
 Texture = ExtResource("1_avv3l")
 IsTransparent = false
+MetaData = ""

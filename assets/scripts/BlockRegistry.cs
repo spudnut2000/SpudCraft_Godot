@@ -10,7 +10,7 @@ public static class BlockRegistry
 
 	private static Dictionary<string, Block> _blocks = new();
 
-	public static Vector2I BlockTextureSize { get; } = new(32,32);
+	public static Vector2I BlockTextureSize { get; } = new(16,16);
 	public static Vector2 TextureAtlasSize { get; private set; }
 	public static StandardMaterial3D ChunkMaterial { get; private set; }
 
@@ -28,7 +28,6 @@ public static class BlockRegistry
 	{
 		if (_blocks.TryGetValue(id, out var byId))
 		{
-			GD.Print($"Got block: {byId.Name}");
 			return byId;
 		}
 		
