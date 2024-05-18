@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Block" load_steps=3 format=3 uid="uid://dimitd7hhsx62"]
+
+[ext_resource type="Texture2D" uid="uid://csag8yqusqlw2" path="res://assets/textures/blocks/wood.png" id="1_avv3l"]
+[ext_resource type="Script" path="res://assets/scripts/resources/Block.cs" id="1_g2flb"]
+
+[resource]
+script = ExtResource("1_g2flb")
+Texture = ExtResource("1_avv3l")
+IsTransparent = false

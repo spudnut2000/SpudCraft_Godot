@@ -15,10 +15,6 @@ run/main_scene="res://assets/scenes/World.tscn"
 config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
-[display]
-
-window/vsync/vsync_mode=0
-
 [dotnet]
 
 project/assembly_name="SpudCraft-Godot"

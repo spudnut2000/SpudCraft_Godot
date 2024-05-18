@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using SpudCraftGodot.assets.scripts;
 
 public partial class Player : CharacterBody3D
 {
@@ -12,17 +13,15 @@ public partial class Player : CharacterBody3D
 	[Export] public Label CoordsLabel;
 	
 	[Export] private float _mouseSensitivity = 0.001f;
-	[Export] private float _movementSpeed = 15f;
-	[Export] private float _jumpVelocity = 15f;
-
-	public static Player Instance;
+	[Export] private float _movementSpeed = 5f;
+	[Export] private float _jumpVelocity = 5f;
 
 	private float _cameraXRotation;
 	private float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 	
 	public override void _Ready()
 	{
-		Instance = this;
+		World.Instance.Player = this;
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
 
@@ -92,12 +91,12 @@ public partial class Player : CharacterBody3D
 		if (RayCast.IsColliding() && RayCast.GetCollider() is Chunk chunk)
 		{
 			BlockHighlight.Visible = RayCast.IsColliding();
-
+		
 			var blockPos = RayCast.GetCollisionPoint() - 0.5f * RayCast.GetCollisionNormal();
 			var intBlockPos = new Vector3I(Mathf.FloorToInt(blockPos.X), Mathf.FloorToInt(blockPos.Y), Mathf.FloorToInt(blockPos.Z));
 			BlockHighlight.GlobalPosition = intBlockPos + new Vector3(0.5f, 0.5f, 0.5f);
 			BlockHighlight.GlobalRotation = new(0,0,0);
-
+		
 			if (Input.IsActionJustPressed("left_click"))
 			{
 				chunk.SetBlock((Vector3I)(intBlockPos - chunk.GlobalPosition), BlockRegistry.GetBlockByID("air"));
@@ -105,7 +104,7 @@ public partial class Player : CharacterBody3D
 			
 			if (Input.IsActionJustPressed("right_click"))
 			{
-				ChunkManager.Instance.SetBlock((Vector3I)(intBlockPos + RayCast.GetCollisionNormal()), BlockRegistry.GetBlockByID("stone"));
+				World.Instance.ChunkManager.SetBlock((Vector3I)(intBlockPos + RayCast.GetCollisionNormal()), BlockRegistry.GetBlockByID("wood"));
 			}
 		}
 		else

@@ -17,9 +17,10 @@ public partial class Block : Resource
     [ExportCategory("Block Properties")]
     [Export] public bool IsTransparent;
 
-    public Texture2D[] Textures => new Texture2D[]
-        { Texture, TopTexture, BottomTexture, RightTexture, LeftTexture, FrontTexture, BackTexture };
-    
+    [Export] public string MetaData = "";
+
+    public Texture2D[] Textures => new[] { Texture, TopTexture, BottomTexture, RightTexture, LeftTexture, FrontTexture, BackTexture };
+
     public string Name;
     
     public Block() { }
