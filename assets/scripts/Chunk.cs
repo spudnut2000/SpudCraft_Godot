@@ -14,12 +14,10 @@ public partial class Chunk : StaticBody3D
     
     public override void _Ready()
     {
-        base._Ready();
-
         CollisionLayer = 1;
         
-        CallDeferred(Node.MethodName.AddChild, _meshInstance);
-        CallDeferred(Node.MethodName.AddChild, _collisionShape);
+        AddChild(_meshInstance);
+        AddChild(_collisionShape);
         
         UpdateCollisionShape();
     }
@@ -29,6 +27,7 @@ public partial class Chunk : StaticBody3D
         LoadChunkData();
         UpdateMesh();
         UpdateCollisionShape();
+        ChunkManager.HasDeferredCall = false;
     }
 
     public void SaveData()
@@ -36,18 +35,21 @@ public partial class Chunk : StaticBody3D
         // TODO: Save chunk data to file
     }
     
-    public void SetChunkPosition(Vector2I position)
+    public void SetChunkPosition(Vector2I position, bool performUpdate)
     {
         World.Instance.ChunkManager.UpdateChunkPosition(this, position, ChunkPosition);
         ChunkPosition = position;
         CallDeferred(Node3D.MethodName.SetGlobalPosition, new Vector3(position.X * ChunkData.ChunkWidth, 0, position.Y * ChunkData.ChunkWidth));
-        Update();
+        if (performUpdate)
+        {
+            Update();
+        }
     }
     
     public void SetBlock(Vector3I position, Block block)
     {
         Data.Blocks[position.X, position.Y, position.Z] = block;
-        Update();
+        ChunkManager.QueueChunk(this);
     }
     
     public Block GetBlock(Vector3I position)
