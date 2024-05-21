@@ -15,7 +15,7 @@ public partial class ChunkManager : Node
     private ConcurrentDictionary<Vector2I, Chunk> _positionToChunk = new();
     
     
-    private ConcurrentQueue<Chunk> _chunkQueue = new();
+    private static ConcurrentQueue<Chunk> _chunkQueue = new();
     private Thread _chunkUpdateThread;
     private Thread _chunkPositionUpdateThread;
 
@@ -23,6 +23,13 @@ public partial class ChunkManager : Node
     private object _playerPositionLock = new();
     
     private int _renderDistance = 15;
+
+    public static bool HasDeferredCall = false;
+
+    public static void QueueChunk(Chunk chunk)
+    {
+        _chunkQueue.Enqueue(chunk);
+    }
 
     public override void _Ready()
     {
@@ -84,22 +91,29 @@ public partial class ChunkManager : Node
             {
                 var index = (y * _renderDistance) + x;
                 var halfWidth = Mathf.FloorToInt(_renderDistance / 2f);
-                _chunks[index].SetChunkPosition(new(x - halfWidth, y - halfWidth));
+                _chunks[index].SetChunkPosition(new(x - halfWidth, y - halfWidth), true);
             }
         }
     }
 
+    private SpinWait _spinner;
     private void UpdateChunksThreadProcess()
     {
         while (IsRunning)
         {
+            if (HasDeferredCall)
+            {
+                _spinner.SpinOnce();
+                continue;
+            }
             if (_chunkQueue.TryDequeue(out Chunk chunk))
             {
-                chunk.Update();
+                HasDeferredCall = true;
+                chunk.CallDeferred(Chunk.MethodName.Update);
             }
             else
             {
-                Thread.Sleep(10);
+                _spinner.SpinOnce();
             }
         }
     }
@@ -146,8 +160,8 @@ public partial class ChunkManager : Node
                 _chunkToPosition[chunk] = newChunkPosition;
                 _positionToChunk[newChunkPosition] = chunk;
 
-                chunk.CallDeferred(nameof(Chunk.SetChunkPosition), newChunkPosition);
-
+                chunk.CallDeferred(Chunk.MethodName.SetChunkPosition, newChunkPosition, false);
+                _chunkQueue.Enqueue(chunk);
             }
         }
     }
