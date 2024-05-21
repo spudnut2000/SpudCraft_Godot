@@ -130,37 +130,47 @@ public partial class Chunk : StaticBody3D
         }
     }
 
+    private Vector2[] uvs = new Vector2[4];
+    private Vector3[] verts = new Vector3[4];
+    private Vector3[] normals = new Vector3[4];
+
+
+    private static Vector2 textureAtlasSize = BlockRegistry.TextureAtlasSize;
+    private static float uvWidth = 1f / textureAtlasSize.X;
+    private static float uvHeight = 1f / textureAtlasSize.Y;
+
+    private Vector2 uv1 = new Vector2(0, uvHeight); 
+    private Vector2 uv2 = new Vector2(uvWidth, uvHeight); 
+    private Vector2 uv3 = new Vector2(uvWidth, 0); 
+    
     private void CreateBlockFace(int[] face, Vector3I blockPosition, Texture2D texture)
     {
         //Create block face, check for transparent blocks. Use the Texture property on _blocks[block.Position.X, block.Position.Y, block.Position.Z]
         var texturePos = BlockRegistry.GetTextureAtlasPosition(texture);
-        var textureAtlasSize = BlockRegistry.TextureAtlasSize;
 
         var uvOffset = texturePos / textureAtlasSize;
-        var uvWidth = 1f / textureAtlasSize.X;
-        var uvHeight = 1f / textureAtlasSize.Y;
-
-        var uvA = uvOffset + new Vector2(0, 0);
-        var uvB = uvOffset + new Vector2(0, uvHeight);
-        var uvC = uvOffset + new Vector2(uvWidth, uvHeight);
-        var uvD = uvOffset + new Vector2(uvWidth, 0);
+        
+        uvs[0] = uvOffset;
+        uvs[1] = uvOffset + uv1;
+        uvs[2] = uvOffset + uv2;
+        uvs[3] = uvOffset + uv3;
 		
-        var a = MeshHelper.CubeVertices[face[0]] + blockPosition;
-        var b = MeshHelper.CubeVertices[face[1]] + blockPosition;
-        var c = MeshHelper.CubeVertices[face[2]] + blockPosition;
-        var d = MeshHelper.CubeVertices[face[3]] + blockPosition;
+        verts[0] = MeshHelper.CubeVertices[face[0]] + blockPosition;
+        verts[1] = MeshHelper.CubeVertices[face[1]] + blockPosition;
+        verts[2] = MeshHelper.CubeVertices[face[2]] + blockPosition;
+        verts[3] = MeshHelper.CubeVertices[face[3]] + blockPosition;
 
-        var uvTri1 = new Vector2[] { uvA, uvB, uvC };
-        var uvTri2 = new Vector2[] { uvA, uvC, uvD };
+        // var uvTri1 = new Vector2[] { uvA, uvB, uvC, uvD };
+        // var uvTri2 = new Vector2[] { uvA, uvC, uvD };
 
-        var tri1 = new Vector3[] { a, b, c };
-        var tri2 = new Vector3[] { a, c, d };
+        // var tri1 = new Vector3[] { a, b, c, d };
+        // var tri2 = new Vector3[] { a, c, d };
 
-        var normal = ((Vector3)(c - a)).Cross((b - a)).Normalized();
-        var normals = new Vector3[] { normal, normal, normal };
-		
-        _surfaceTool.AddTriangleFan(tri1, uvTri1, normals: normals);
-        _surfaceTool.AddTriangleFan(tri2, uvTri2, normals: normals);      
+        var normal = (verts[2] - verts[0]).Cross(verts[1] - verts[0]).Normalized();
+        normals[0] = normals[1] = normals[2] = normals[3] = normal;
+
+        _surfaceTool.AddTriangleFan(verts, uvs, normals: normals);
+        // _surfaceTool.AddTriangleFan(tri2, uvTri2, normals: normals);      
     }
     
     private bool CheckIfTransparentBlock(Vector3I blockPosition)
