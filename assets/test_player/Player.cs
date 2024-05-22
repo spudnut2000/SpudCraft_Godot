@@ -16,8 +16,8 @@ public partial class Player : CharacterBody3D
 	[Export] public Label SelectedBlockLabel;
 	
 	[Export] private float _mouseSensitivity = 0.001f;
-	[Export] private float _movementSpeed = 15f;
-	[Export] private float _jumpVelocity = 15f;
+	[Export] private float _movementSpeed = 5f;
+	[Export] private float _jumpVelocity = 5f;
 
 	private float _cameraXRotation;
 	private float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();

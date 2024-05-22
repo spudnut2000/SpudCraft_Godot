@@ -14,6 +14,8 @@ public partial class ChunkManager : Node
     private ConcurrentDictionary<Chunk, Vector2I> _chunkToPosition = new();
     private ConcurrentDictionary<Vector2I, Chunk> _positionToChunk = new();
     
+    private Dictionary<Vector2I, ChunkData> _chunkDataMap = new();
+    
     
     private static ConcurrentQueue<Chunk> _chunkQueue = new();
     private Thread _chunkUpdateThread;
@@ -60,6 +62,20 @@ public partial class ChunkManager : Node
         
         _chunkToPosition[chunk] = currentPosition;
         _positionToChunk[currentPosition] = chunk;
+
+
+        ChunkData chunkData;
+        if (_chunkDataMap.TryGetValue(currentPosition, out var savedData))
+        {
+            chunkData = savedData;
+        }
+        else
+        {
+            chunkData = new();
+            _chunkDataMap[currentPosition] = chunkData;
+        }
+        
+        chunk.LoadChunkData(chunkData);
     }
     
     public void SetBlock(Vector3I globalPosition, Block block)

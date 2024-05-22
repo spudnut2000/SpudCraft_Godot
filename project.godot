@@ -15,6 +15,14 @@ run/main_scene="res://assets/scenes/World.tscn"
 config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameConsole="*res://addons/development_console_dotnet/scenes/game_console.tscn"
+
+[display]
+
+window/vsync/vsync_mode=0
+
 [dotnet]
 
 project/assembly_name="SpudCraft-Godot"
@@ -74,3 +82,5 @@ cycle_block={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

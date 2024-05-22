@@ -57,6 +57,7 @@ public static class BlockRegistry
 			{
 				if (!dir.CurrentIsDir())
 				{
+					fileName = fileName.Replace(".remap", "");
 					Block block = ResourceLoader.Load<Block>($"{BlockResourcePath}/{fileName}");
 					block.Name = fileName.Replace(".tres", "");
 

@@ -27,12 +27,8 @@ public partial class Chunk : StaticBody3D
         LoadChunkData();
         UpdateMesh();
         UpdateCollisionShape();
+        
         ChunkManager.HasDeferredCall = false;
-    }
-
-    public void SaveData()
-    {
-        // TODO: Save chunk data to file
     }
     
     public void SetChunkPosition(Vector2I position, bool performUpdate)
