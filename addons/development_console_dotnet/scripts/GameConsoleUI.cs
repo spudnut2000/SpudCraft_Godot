@@ -27,6 +27,7 @@ public partial class GameConsoleUI : Control
     public override void _EnterTree()
     {
         AddInputMappings();
+        HideConsole();
         
         GameConsole.ConsoleUi = this;
         GameConsole.GetCommands();
