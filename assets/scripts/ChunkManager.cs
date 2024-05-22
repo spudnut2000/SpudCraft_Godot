@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using Godot;
+using InGameConsole;
 using Vector3 = System.Numerics.Vector3;
 
 namespace SpudCraftGodot.assets.scripts;
@@ -42,6 +43,8 @@ public partial class ChunkManager : Node
         
         _chunkPositionUpdateThread = new Thread(UpdateChunkPositionsThreadProcess);
         _chunkPositionUpdateThread.Start();
+        
+        GameConsole.AddCustomParser((typeof(Block), s => { return BlockRegistry.GetBlockByID(s); }));
     }
 
     public override void _PhysicsProcess(double delta)

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Concurrent;
+using InGameConsole;
 using SpudCraftGodot.assets.scripts;
 
 public partial class World : Node3D
@@ -30,5 +31,10 @@ public partial class World : Node3D
 		
 	}
 	
+	[Command(CommandName = "SetBlock", Description = "Set a block at a specific position")]
+	public static void SetBlockCommand(Vector3I position, Block block)
+	{
+		Instance.ChunkManager.SetBlock(position, block);
+	}
 	
 }

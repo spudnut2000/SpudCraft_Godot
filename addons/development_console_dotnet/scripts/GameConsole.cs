@@ -37,7 +37,15 @@ public static class GameConsole
                 if (amounts.Length != 2) return null;
                 return new Vector2(float.Parse(amounts[0]), float.Parse(amounts[1]));
             }
-        }
+        },
+        {
+            typeof(Vector3I), (vectorString) =>
+            {
+                var amounts = vectorString.TrimStart('(').TrimEnd(')').Split(",").Select(val => val.Trim()).ToArray();
+                if (amounts.Length != 3) return null;
+                return new Vector3I(int.Parse(amounts[0]), int.Parse(amounts[1]), int.Parse(amounts[2]));
+            }
+        },
     };
 
     private const string CommandPattern = "(?<val>(\\([^\\)]+\\)))|\"(?<val>[^\"]+)\"|'(?<val>[^']+)'|(?<val>[^\\s]+)";
@@ -57,6 +65,16 @@ public static class GameConsole
             _consoleUI = value;
             SetContext(_consoleUI.GetTree().Root);
         }
+    }
+
+    public static void AddCustomParser((Type, Func<string, object>) parser)
+    {
+        if (!_parsers.ContainsKey(parser.Item1))
+        {
+            _parsers.Add(parser.Item1, parser.Item2);
+            return;
+        }
+        _parsers[parser.Item1] = parser.Item2;
     }
     
     public static void GetCommands()
@@ -331,17 +349,23 @@ public static class GameConsole
         _consoleUI.Clear();
     }
     
-    [Command]
-    [Command(CommandName = "tree")]
-    private static void ToggleTree()
-    {
-        _consoleUI.ToggleTree();
-    }
+    // [Command]
+    // [Command(CommandName = "tree")]
+    // private static void ToggleTree()
+    // {
+    //     _consoleUI.ToggleTree();
+    // }
 
     [Command(CommandName = "mv")]
     private static void RenameNode(string newName)
     {
         _context.Name = newName;
+    }
+
+    [Command]
+    private static void Exit()
+    {
+        _consoleUI.GetTree().Quit();
     }
     
     #endregion

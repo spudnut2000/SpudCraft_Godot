@@ -25,6 +25,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="CanvasLayer" type="CanvasLayer"]
 process_mode = 3
+layer = 128
 
 [node name="GameConsole" type="Control" parent="." node_paths=PackedStringArray("_consolePanel", "_outputLabel", "_inputField", "_contextLabel", "_treePanel", "_tree")]
 process_mode = 3
@@ -43,7 +44,6 @@ _treePanel = NodePath("MarginContainer/HBoxContainer/SceneTreePanel")
 _tree = NodePath("MarginContainer/HBoxContainer/SceneTreePanel/Tree")
 
 [node name="MarginContainer" type="MarginContainer" parent="GameConsole"]
-process_mode = 3
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,17 +57,14 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
 [node name="HBoxContainer" type="HBoxContainer" parent="GameConsole/MarginContainer"]
-process_mode = 3
 layout_mode = 2
 
 [node name="SceneTreePanel" type="Panel" parent="GameConsole/MarginContainer/HBoxContainer"]
-process_mode = 3
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 theme = ExtResource("2_18h05")
 
 [node name="Tree" type="Tree" parent="GameConsole/MarginContainer/HBoxContainer/SceneTreePanel"]
-process_mode = 3
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -78,13 +75,11 @@ theme = SubResource("Theme_4msy2")
 hide_root = true
 
 [node name="ConsolePanel" type="Panel" parent="GameConsole/MarginContainer/HBoxContainer"]
-process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_18h05")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GameConsole/MarginContainer/HBoxContainer/ConsolePanel"]
-process_mode = 3
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -93,7 +88,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="GameConsole/MarginContainer/HBoxContainer/ConsolePanel/VBoxContainer"]
-process_mode = 3
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -101,24 +95,20 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 
 [node name="ConsoleLabel" type="RichTextLabel" parent="GameConsole/MarginContainer/HBoxContainer/ConsolePanel/VBoxContainer/MarginContainer"]
-process_mode = 3
 layout_mode = 2
 bbcode_enabled = true
 scroll_following = true
 
 [node name="InputHBox" type="HBoxContainer" parent="GameConsole/MarginContainer/HBoxContainer/ConsolePanel/VBoxContainer"]
-process_mode = 3
 layout_mode = 2
 theme = SubResource("Theme_xx750")
 
 [node name="ContextLabel" type="Label" parent="GameConsole/MarginContainer/HBoxContainer/ConsolePanel/VBoxContainer/InputHBox"]
-process_mode = 3
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_hqkos")
 text = "/root $:"
 
 [node name="InputField" type="TextEdit" parent="GameConsole/MarginContainer/HBoxContainer/ConsolePanel/VBoxContainer/InputHBox"]
-process_mode = 3
 clip_contents = true
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2

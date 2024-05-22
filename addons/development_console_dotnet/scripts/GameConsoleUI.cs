@@ -32,32 +32,18 @@ public partial class GameConsoleUI : Control
         GameConsole.ConsoleUi = this;
         GameConsole.GetCommands();
         
-        GameConsole.RunCommand("tree");
+        ToggleTree();
         
         Print(_motd);
         
-        var item = _tree.CreateItem();
-        item.SetText(0, "tree_root");
-        //SetupTree(GetTree().Root, _tree.GetRoot());
-        //_tree.ItemActivated += TreeItemActivated;
-        
-        //GetTree().NodeRemoved += SceneTreeNodeRemoved;
-        //GetTree().NodeAdded += SceneTreeNodeAdded;
-        //GetTree().NodeRenamed += SceneTreeNodeRenamed;
-        VisibilityChanged += () =>
-        {
-            if (Visible)
-            {
-                _inputField.GrabFocus();
-                Input.MouseMode = Input.MouseModeEnum.Visible;
-                //GetTree().Paused = true;
-            }
-            else
-            {
-                Input.MouseMode = Input.MouseModeEnum.Captured;
-                //GetTree().Paused = false;
-            }
-        };
+        // var item = _tree.CreateItem();
+        // item.SetText(0, "tree_root");
+        // SetupTree(GetTree().Root, _tree.GetRoot());
+        // _tree.ItemActivated += TreeItemActivated;
+        //
+        // GetTree().NodeRemoved += SceneTreeNodeRemoved;
+        // GetTree().NodeAdded += SceneTreeNodeAdded;
+        // GetTree().NodeRenamed += SceneTreeNodeRenamed;
     }
     
     public override void _Input(InputEvent @event)
@@ -249,6 +235,7 @@ public partial class GameConsoleUI : Control
     {
         if (_consoleCanTween)
         {
+            //GetTree().Paused = true;
             _consoleCanTween = false;
             Visible = true;
             var tween = GetTree().CreateTween();
@@ -259,6 +246,10 @@ public partial class GameConsoleUI : Control
             {
                 _consoleCanTween = true;
             };
+
+            _inputField.GrabFocus();
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+                
         }
     }
 
@@ -276,6 +267,8 @@ public partial class GameConsoleUI : Control
                 Visible = false;
                 _consoleCanTween = true;
             };
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+            //GetTree().Paused = false;
         }
     }
 

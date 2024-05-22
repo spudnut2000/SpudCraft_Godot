@@ -18,6 +18,7 @@ sky = SubResource("Sky_h7fsv")
 tonemap_mode = 2
 
 [node name="World" type="Node3D"]
+process_mode = 1
 script = ExtResource("1_ubar7")
 Noise = SubResource("FastNoiseLite_8bnqr")
 _playerScene = ExtResource("2_widkp")
