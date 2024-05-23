@@ -18,6 +18,7 @@ shader_parameter/albedo = Color(1, 1, 1, 1)
 shader_parameter/outline_width = 0.0
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("Head", "Camera", "RayCast", "BlockHighlight", "FpsLabel", "CoordsLabel", "LookingAtLabel", "SelectedBlockLabel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_kimpx")
 Head = NodePath("Head")
 Camera = NodePath("Head/Camera3D")

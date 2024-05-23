@@ -1,4 +1,5 @@
 using Godot;
+using InGameConsole;
 
 namespace SpudCraftGodot.assets.scripts;
 

@@ -16,8 +16,8 @@ public partial class Player : CharacterBody3D
 	[Export] public Label SelectedBlockLabel;
 	
 	[Export] private float _mouseSensitivity = 0.001f;
-	[Export] private float _movementSpeed = 5f;
-	[Export] private float _jumpVelocity = 5f;
+	[Export] private float _movementSpeed = 15f;
+	[Export] private float _jumpVelocity = 15f;
 
 	private float _cameraXRotation;
 	private float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
@@ -28,7 +28,7 @@ public partial class Player : CharacterBody3D
 	public override void _Ready()
 	{
 		World.Instance.Player = this;
-		Input.MouseMode = Input.MouseModeEnum.Captured;
+		//Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
 
 	public override void _Process(double delta)
@@ -125,7 +125,7 @@ public partial class Player : CharacterBody3D
 			
 			LookingAtLabel.Text = $"Looking at: {intBlockPos}:{chunk.GetBlock(actualBlockPos).Name}";
 		
-			if (Input.IsActionJustPressed("left_click") && chunk.GetBlock(actualBlockPos).Name != "bedrock" && actualBlockPos.Y < ChunkData.ChunkHeight - 1)
+			if (Input.IsActionJustPressed("left_click") && actualBlockPos.Y < ChunkData.ChunkHeight - 1)
 			{
 				chunk.SetBlock(actualBlockPos, BlockRegistry.GetBlockByID("air"));
 			}

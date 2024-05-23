@@ -25,7 +25,7 @@ public partial class World : Node3D
 		CallDeferred(Node.MethodName.AddChild, this.Player);
 		CallDeferred(Node.MethodName.AddChild, this.ChunkManager);
 
-		Player.CallDeferred(Node3D.MethodName.SetGlobalPosition, new Vector3(0, 40, 0));
+		this.Player.CallDeferred(Node3D.MethodName.SetGlobalPosition, new Vector3(0, 128, 0));
 		
 		BlockRegistry.Initialize();
 		

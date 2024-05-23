@@ -58,15 +58,6 @@ public partial class ChunkManager : Node
 
     public void UpdateChunkPosition(Chunk chunk, Vector2I currentPosition, Vector2I previousPosition)
     {
-        if (_positionToChunk.TryGetValue(previousPosition, out var chunkAtPos) && chunkAtPos == chunk)
-        {
-            _positionToChunk.Remove(previousPosition, out var c);
-        }
-        
-        _chunkToPosition[chunk] = currentPosition;
-        _positionToChunk[currentPosition] = chunk;
-
-
         ChunkData chunkData;
         if (_chunkDataMap.TryGetValue(currentPosition, out var savedData))
         {
@@ -75,10 +66,21 @@ public partial class ChunkManager : Node
         else
         {
             chunkData = new();
+            chunkData.GenerateWorldData(currentPosition);
+            //chunkData.CreateDefaultSuperflat();
             _chunkDataMap[currentPosition] = chunkData;
         }
         
         chunk.LoadChunkData(chunkData);
+        
+        if (_positionToChunk.TryGetValue(previousPosition, out var chunkAtPos) && chunkAtPos == chunk)
+        {
+            _positionToChunk.Remove(previousPosition, out var c);
+        }
+        
+        _chunkToPosition[chunk] = currentPosition;
+        _positionToChunk[currentPosition] = chunk;
+
     }
     
     public void SetBlock(Vector3I globalPosition, Block block)

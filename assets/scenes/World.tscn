@@ -4,6 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://cjbalvfe4fga1" path="res://assets/test_player/Player.tscn" id="2_widkp"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_8bnqr"]
+noise_type = 3
+seed = 170
+frequency = 0.0321
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_u1db5"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
