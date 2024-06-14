@@ -66,8 +66,8 @@ public partial class ChunkManager : Node
         else
         {
             chunkData = new();
-            chunkData.GenerateWorldData(currentPosition);
-            //chunkData.CreateDefaultSuperflat();
+            //chunkData.GenerateWorldData(currentPosition);
+            chunkData.CreateDefaultSuperflat();
             _chunkDataMap[currentPosition] = chunkData;
         }
         

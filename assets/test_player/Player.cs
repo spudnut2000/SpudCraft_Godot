@@ -1,7 +1,9 @@
 using Godot;
 using System;
 using System.Linq;
+using InGameConsole;
 using SpudCraftGodot.assets.scripts;
+using SpudCraftGodot.assets.scripts.resources;
 
 public partial class Player : CharacterBody3D
 {
@@ -14,10 +16,13 @@ public partial class Player : CharacterBody3D
 	[Export] public Label CoordsLabel;
 	[Export] public Label LookingAtLabel;
 	[Export] public Label SelectedBlockLabel;
+	[Export] public GameMode GameMode { get; set; } = GameMode.Survival;
 	
 	[Export] private float _mouseSensitivity = 0.001f;
 	[Export] private float _movementSpeed = 15f;
 	[Export] private float _jumpVelocity = 15f;
+
+	public Tool CurrentTool = new Tool() { Name = "Pickaxe", ToolType = ToolType.Shovel, Efficiency = 10 };
 
 	private float _cameraXRotation;
 	private float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
@@ -25,10 +30,14 @@ public partial class Player : CharacterBody3D
 	private string _selectedBlock = "dirt";
 	private int _selectedBlockIndex = 0;
 	
+	private bool _isBreakingBlock = false;
+	private Timer _breakTimer = new Timer();
+	
 	public override void _Ready()
 	{
 		World.Instance.Player = this;
 		//Input.MouseMode = Input.MouseModeEnum.Captured;
+		AddChild(_breakTimer);
 	}
 
 	public override void _Process(double delta)
@@ -122,13 +131,51 @@ public partial class Player : CharacterBody3D
 			BlockHighlight.GlobalRotation = new(0,0,0);
 
 			Vector3I actualBlockPos = (Vector3I)(intBlockPos - chunk.GlobalPosition);
+			Block block = chunk.GetBlock(actualBlockPos);
 			
-			LookingAtLabel.Text = $"Looking at: {intBlockPos}:{chunk.GetBlock(actualBlockPos).Name}";
+			LookingAtLabel.Text = $"Looking at: {intBlockPos}:{block.Name}";
 		
-			if (Input.IsActionJustPressed("left_click") && actualBlockPos.Y < ChunkData.ChunkHeight - 1)
+			
+			if (Input.IsActionPressed("left_click") && actualBlockPos.Y < ChunkData.ChunkHeight - 1)
 			{
-				chunk.SetBlock(actualBlockPos, BlockRegistry.GetBlockByID("air"));
+				if (GameMode is GameMode.Creative)
+				{
+					chunk.SetBlock(actualBlockPos, BlockRegistry.GetBlockByID("air"));
+				}
+				else if (GameMode is GameMode.Survival)
+				{
+					if (!block.IsUnbreakable && block.RequiredToolType == CurrentTool.ToolType || block.RequiredToolType == ToolType.None && block.Name != "air")
+					{
+						if (!_isBreakingBlock)
+						{
+							_isBreakingBlock = true;
+							float timeToBreak = block.Hardness;
+							if (CurrentTool.ToolType == block.PreferredToolType)
+							{
+								timeToBreak = block.Hardness / CurrentTool.Efficiency;
+							}
+							
+							_breakTimer.Start(timeToBreak);
+							
+							_breakTimer.Timeout += () =>
+							{
+								chunk.SetBlock(actualBlockPos, BlockRegistry.GetBlockByID("air"));
+								_isBreakingBlock = false;
+							};
+						}
+					}
+				}
+				else
+				{
+					GameConsole.PrintError("Player: Unknown game mode.");
+				}
 			}
+			else if (Input.IsActionJustReleased("left_click"))
+			{
+				_breakTimer.Stop();
+				_isBreakingBlock = false;
+			}
+
 			
 			if (Input.IsActionJustPressed("right_click"))
 			{
@@ -141,4 +188,10 @@ public partial class Player : CharacterBody3D
 			BlockHighlight.Visible = false;
 		}
 	}
+}
+
+public enum GameMode
+{
+	Creative,
+	Survival
 }

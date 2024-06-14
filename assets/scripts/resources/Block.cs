@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using SpudCraftGodot.assets.scripts;
 
 [GlobalClass]
 public partial class Block : Resource
@@ -16,6 +17,11 @@ public partial class Block : Resource
 
     [ExportCategory("Block Properties")]
     [Export] public bool IsTransparent;
+    [Export] public bool IsUnbreakable;
+    
+    [Export] public float Hardness = 1;
+    [Export] public ToolType RequiredToolType = ToolType.None;
+    [Export] public ToolType PreferredToolType = ToolType.None;
 
     [Export] public string MetaData = "";
 

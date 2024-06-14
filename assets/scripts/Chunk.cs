@@ -51,6 +51,9 @@ public partial class Chunk : StaticBody3D
     
     public Block GetBlock(Vector3I position)
     {
+        if (position.X < 0 || position.X >= ChunkData.ChunkWidth ||
+            position.Y < 0 || position.Y >= ChunkData.ChunkHeight ||
+            position.Z < 0 || position.Z >= ChunkData.ChunkWidth) return null;
         return Data.Blocks[position.X, position.Y, position.Z];
     }
 

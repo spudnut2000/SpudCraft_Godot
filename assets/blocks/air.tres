@@ -5,3 +5,8 @@
 [resource]
 script = ExtResource("1_cg631")
 IsTransparent = true
+IsUnbreakable = true
+Hardness = 1.0
+RequiredToolType = 0
+PreferredToolType = 0
+MetaData = ""

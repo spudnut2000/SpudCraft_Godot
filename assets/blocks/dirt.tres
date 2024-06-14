@@ -7,3 +7,8 @@
 script = ExtResource("1_31cpn")
 Texture = ExtResource("1_e81c2")
 IsTransparent = false
+IsUnbreakable = false
+Hardness = 1.0
+RequiredToolType = 0
+PreferredToolType = 4
+MetaData = ""

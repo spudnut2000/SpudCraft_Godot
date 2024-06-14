@@ -7,4 +7,6 @@
 script = ExtResource("1_0s64p")
 Texture = ExtResource("1_4ujqo")
 IsTransparent = false
+IsUnbreakable = true
+Hardness = 1.0
 MetaData = ""
